@@ -15,8 +15,8 @@ class LabeledCheckBox extends Panel{
 		super(container)
 		layout = new HorizontalLayout
 		label = new Label(this)
-		checkBox = new CheckBox(this)
 		label.width = 150
+		checkBox = new CheckBox(this)
 	}
 	
 	def LabeledCheckBox setText(String text){ 

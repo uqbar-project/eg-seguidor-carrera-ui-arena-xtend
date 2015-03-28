@@ -61,7 +61,7 @@ class SeguidorDeCarreraWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 		new Label(panelDeListadoDeMaterias).text = "Materias"
 		new List<Materia>(panelDeListadoDeMaterias) => [
 				bindItemsToProperty("carrera.materias").adapter = new PropertyAdapter(Materia, "nombreMateria")
-				heigth = 150
+				height = 150
 				width = 130
 				bindValueToProperty("materiaSeleccionada")
 			]
