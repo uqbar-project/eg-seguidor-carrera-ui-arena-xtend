@@ -27,7 +27,7 @@ class NuevaMateriaWindow extends Dialog<CrearMateriaAppModel> {
 		]
 		new Button(mainPanel)=>[
 			caption = "Aceptar"
-			onClick = [ |
+			onClick [ |
 				this.modelObject.agregarMateria
 				this.close
 			]

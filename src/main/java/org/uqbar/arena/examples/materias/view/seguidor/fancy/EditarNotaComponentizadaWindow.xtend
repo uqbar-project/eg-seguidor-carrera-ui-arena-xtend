@@ -19,7 +19,7 @@ class EditarNotaComponentizadaWindow extends Dialog<Nota>{
 		new LabeledCheckBox(mainPanel).setText("Aprobado").bindValueToProperty("estaAprobada")
 		new Button(mainPanel) => [
 			caption = "Aceptar"
-			onClick = [|this.close]
+			onClick [|this.close]
 		]
 	}
 }

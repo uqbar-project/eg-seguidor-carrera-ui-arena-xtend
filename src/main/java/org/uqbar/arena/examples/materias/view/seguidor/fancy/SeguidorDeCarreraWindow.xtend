@@ -67,7 +67,7 @@ class SeguidorDeCarreraWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 			]
 		new Button(panelDeListadoDeMaterias) =>[
 			caption = "Nueva Materia"
-			onClick = [ | new NuevaMateriaWindow(this, this.modelObject.carrera).open ]
+			onClick [ | new NuevaMateriaWindow(this, this.modelObject.carrera).open ]
 			
 		] 
 	}
@@ -133,13 +133,13 @@ class SeguidorDeCarreraWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 		new Button(botoneraPanel)=>[
 			caption="Editar"
 			width=100
-			onClick = [|new EditarNotaWindow(this, this.modelObject.notaSeleccionada).open]
+			onClick [|new EditarNotaWindow(this, this.modelObject.notaSeleccionada).open]
 		]
 			
 		new Button(botoneraPanel)=>[
 			caption="+"
 			width=100
-			onClick = [| 
+			onClick [| 
 				val nota = this.modelObject.nuevaNota
 				new CrearNotaWindow(this, nota).open
 			]
@@ -148,7 +148,7 @@ class SeguidorDeCarreraWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 		new Button(botoneraPanel)=>[
 			caption="-"
 			width=100
-			onClick = [| 
+			onClick [| 
 				this.modelObject.eliminarNota
 			]
 		]

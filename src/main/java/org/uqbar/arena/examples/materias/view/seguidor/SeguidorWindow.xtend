@@ -51,7 +51,7 @@ class SeguidorWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 		]
 		new Button(owner) =>[
 			caption = "Nueva Materia"
-			onClick = [ | new NuevaMateriaWindow(this, this.modelObject.carrera).open ]
+			onClick [ | new NuevaMateriaWindow(this, this.modelObject.carrera).open ]
 		] 
 	}
 
@@ -96,12 +96,12 @@ class SeguidorWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 		
 		new Button(owner)=>[
 			caption="Editar"
-			onClick = [|new EditarNotaWindow(this, this.modelObject.notaSeleccionada).open]
+			onClick [|new EditarNotaWindow(this, this.modelObject.notaSeleccionada).open]
 		]
 			
 		new Button(owner)=>[
 			caption="+"
-			onClick = [| 
+			onClick [| 
 				val nota = this.modelObject.nuevaNota
 				new CrearNotaWindow(this, nota).open
 			]
@@ -109,7 +109,7 @@ class SeguidorWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 		
 		new Button(owner)=>[
 			caption="-"
-			onClick = [| 
+			onClick [| 
 				this.modelObject.eliminarNota
 			]
 		]

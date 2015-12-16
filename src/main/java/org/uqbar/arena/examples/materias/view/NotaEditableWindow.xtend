@@ -34,7 +34,7 @@ class NotaEditableWindow extends Dialog<Nota> {
 
 		new Button(mainPanel) => [
 			caption = "Aceptar"
-			onClick = [|this.close]
+			onClick [|this.close]
 		]
 	}
 }
