@@ -59,7 +59,7 @@ class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarre
 		new List<Materia>(panelDeListadoDeMaterias) => [
 				(items <=> "carrera.materias").adapter = new PropertyAdapter(Materia, "nombreMateria")
 				height = 150
-				width = 130
+				width = 270
 				value <=> "materiaSeleccionada"
 			]
 			
