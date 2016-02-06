@@ -1,14 +1,15 @@
-package org.uqbar.arena.examples.materias.view
+package ar.edu.seguidorCarrera.view
 
-import org.uqbar.arena.windows.Dialog
-import org.uqbar.arena.examples.materias.domain.Carrera
-import org.uqbar.arena.widgets.Panel
-import org.uqbar.arena.windows.WindowOwner
+import ar.edu.seguidorCarrera.appModel.CrearMateriaAppModel
+import ar.edu.seguidorCarrera.domain.Carrera
 import org.uqbar.arena.layout.VerticalLayout
-import org.uqbar.arena.widgets.Label
-import org.uqbar.arena.widgets.TextBox
 import org.uqbar.arena.widgets.Button
-import org.uqbar.arena.examples.materias.domain.appModel.CrearMateriaAppModel
+import org.uqbar.arena.widgets.Label
+import org.uqbar.arena.widgets.Panel
+import org.uqbar.arena.widgets.TextBox
+import org.uqbar.arena.windows.Dialog
+import org.uqbar.arena.windows.WindowOwner
+import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 
 class NuevaMateriaWindow extends Dialog<CrearMateriaAppModel> {
 	
@@ -20,10 +21,10 @@ class NuevaMateriaWindow extends Dialog<CrearMateriaAppModel> {
 		title = "Nueva Materia"
 		mainPanel.layout = new VerticalLayout 
 		
-		new Label(mainPanel).text="Nombre:"
-		new TextBox(mainPanel)=>[
-			bindValueToProperty("materia.nombreMateria")
-			width=200
+		new Label(mainPanel).text = "Nombre:"
+		new TextBox(mainPanel) => [
+			value <=> "materia.nombreMateria"
+			width = 200
 		]
 		new Button(mainPanel)=>[
 			caption = "Aceptar"

@@ -1,6 +1,6 @@
-package org.uqbar.arena.examples.materias.view
+package ar.edu.seguidorCarrera.view
 
-import org.uqbar.arena.examples.materias.domain.Nota
+import ar.edu.seguidorCarrera.domain.Nota
 import org.uqbar.arena.windows.WindowOwner
 
 class EditarNotaWindow extends NotaEditableWindow{

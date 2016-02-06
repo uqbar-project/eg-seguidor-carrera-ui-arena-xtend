@@ -1,7 +1,7 @@
-package org.uqbar.arena.examples.materias.view.components
+package ar.edu.seguidorCarrera.view.components
 
 import java.util.ArrayList
-import org.uqbar.arena.widgets.TextFilter
+import org.uqbar.arena.filters.TextFilter
 import org.uqbar.arena.widgets.TextInputEvent
 
 class DateTextFilter implements TextFilter {

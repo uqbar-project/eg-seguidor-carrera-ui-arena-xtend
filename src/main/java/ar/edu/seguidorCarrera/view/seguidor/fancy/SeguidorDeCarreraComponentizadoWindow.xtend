@@ -1,15 +1,16 @@
-package org.uqbar.arena.examples.materias.view.seguidor.fancy
+package ar.edu.seguidorCarrera.view.seguidor.fancy
 
+import ar.edu.seguidorCarrera.appModel.SeguidorDeCarreraAppModel
+import ar.edu.seguidorCarrera.domain.Materia
+import ar.edu.seguidorCarrera.domain.Nota
+import ar.edu.seguidorCarrera.view.NuevaMateriaWindow
+import ar.edu.seguidorCarrera.view.components.LabeledCheckBox
+import ar.edu.seguidorCarrera.view.components.LabeledSelector
+import ar.edu.seguidorCarrera.view.components.LabeledTextBox
+import ar.edu.seguidorCarrera.view.components.Titulo
 import java.text.SimpleDateFormat
+import java.util.Date
 import org.uqbar.arena.bindings.PropertyAdapter
-import org.uqbar.arena.examples.materias.domain.Materia
-import org.uqbar.arena.examples.materias.domain.Nota
-import org.uqbar.arena.examples.materias.domain.appModel.SeguidorDeCarreraAppModel
-import org.uqbar.arena.examples.materias.view.NuevaMateriaWindow
-import org.uqbar.arena.examples.materias.view.components.LabeledCheckBox
-import org.uqbar.arena.examples.materias.view.components.LabeledSelector
-import org.uqbar.arena.examples.materias.view.components.LabeledTextBox
-import org.uqbar.arena.examples.materias.view.components.Titulo
 import org.uqbar.arena.layout.ColumnLayout
 import org.uqbar.arena.layout.HorizontalLayout
 import org.uqbar.arena.layout.VerticalLayout
@@ -21,6 +22,8 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
+
+import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 
 class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 
@@ -43,22 +46,23 @@ class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarre
 		new Titulo(mainPanel, "Seguidor de Carrera", 20)
 
 		//Agregamos el contenido
-		var Panel contentPanel = new Panel(mainPanel)
+		val Panel contentPanel = new Panel(mainPanel)
 		contentPanel.layout = new ColumnLayout(2)
 		this.crearListadoDeMaterias(contentPanel)
 		this.crearEdicionDeMateriaSeleccionada(contentPanel)
 	}
 
 	def crearListadoDeMaterias(Panel owner) {
-		var Panel panelDeListadoDeMaterias = new Panel(owner)
+		val Panel panelDeListadoDeMaterias = new Panel(owner)
 
-		new Titulo(panelDeListadoDeMaterias,"Materias")
+		new Titulo(panelDeListadoDeMaterias, "Materias")
 		new List<Materia>(panelDeListadoDeMaterias) => [
-				bindItemsToProperty("carrera.materias").adapter = new PropertyAdapter(Materia, "nombreMateria")
+				(items <=> "carrera.materias").adapter = new PropertyAdapter(Materia, "nombreMateria")
 				height = 150
 				width = 130
-				bindValueToProperty("materiaSeleccionada")
+				value <=> "materiaSeleccionada"
 			]
+			
 		new Button(panelDeListadoDeMaterias) =>[
 			caption = "Nueva Materia"
 			onClick [ | new NuevaMateriaWindow(this, this.modelObject.carrera).open ]
@@ -66,11 +70,11 @@ class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarre
 	}
 
 	def crearEdicionDeMateriaSeleccionada(Panel owner) {
-		var Panel materiaCompletaPanel = new Panel(owner)
+		val Panel materiaCompletaPanel = new Panel(owner)
 		materiaCompletaPanel.layout = new VerticalLayout
 
 		new Label(materiaCompletaPanel)=>[
-			bindValueToProperty("materiaSeleccionada.nombreMateria")
+			value <=> "materiaSeleccionada.nombreMateria"
 			fontSize = 13
 		]
 		
@@ -87,7 +91,7 @@ class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarre
 			.bindValueToProperty("materiaSeleccionada.profesor")
 		
 		new LabeledSelector(materiaCompletaPanel)=>[
-			text="Ubicación:"
+			text = "Ubicación:"
 			bindItemsToProperty("ubicacionesPosibles")
 			bindValueToProperty("materiaSeleccionada.ubicacion")
 		]
@@ -98,13 +102,14 @@ class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarre
 	def crearEdicionDeNotas(Panel panelDeEdicionDeMateria) {
 		new Titulo(panelDeEdicionDeMateria, "Notas de Cursada", 12)
 		
-		var tablaDeNotas = new Table<Nota>(panelDeEdicionDeMateria, Nota)
-		tablaDeNotas.bindItemsToProperty("materiaSeleccionada.notas")
-		tablaDeNotas.bindValueToProperty("notaSeleccionada")
+		val tablaDeNotas = new Table<Nota>(panelDeEdicionDeMateria, Nota) => [
+			items <=> "materiaSeleccionada.notas"
+			value <=> "notaSeleccionada"
+		]
 		
 		new Column(tablaDeNotas) =>[
 			title = "Fecha"
-			bindContentsToTransformer([ nota | new SimpleDateFormat("dd/MM/YYYY").format(nota.fecha)])
+			bindContentsToProperty("fecha").transformer = [ Date fecha | new SimpleDateFormat("dd/MM/YYYY").format(fecha)] 
 		]
 		
 		new Column<Nota>(tablaDeNotas)=>[
@@ -114,39 +119,38 @@ class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarre
 		
 		new Column(tablaDeNotas) =>[
 			title = "Aprobado"
-			bindContentsToProperty("estaAprobada")
+			bindContentsToProperty("estaAprobada").transformer = [ Boolean estaAprobada | if (estaAprobada) "SI" else "NO" ]
 		]
 		
-		var botoneraPanel = new Panel(panelDeEdicionDeMateria)
+		val botoneraPanel = new Panel(panelDeEdicionDeMateria)
 		botoneraPanel.layout = new HorizontalLayout
 		
 		new Button(botoneraPanel)=>[
-			caption="Editar"
-			width=100
-			onClick [|new EditarNotaComponentizadaWindow(this, this.modelObject.notaSeleccionada)
-					.setTitle("Editar Nota")
-					.open
-			]
+			caption = "Editar"
+			width = 100
+			onClick [ | editarNota("Editar Nota", this.modelObject.notaSeleccionada) ]
 		]
 			
-		new Button(botoneraPanel)=>[
-			caption="+"
-			width=100
-			onClick [| 
-				new EditarNotaComponentizadaWindow(this, this.modelObject.nuevaNota)
-					.setTitle("Nueva Nota")
-					.open
-			]
+		new Button(botoneraPanel) => [
+			caption = "+"
+			width = 100
+			onClick [ | editarNota("Nueva Nota", this.modelObject.nuevaNota)]
 		]
 		
-		new Button(botoneraPanel)=>[
-			caption="-"
-			width=100
+		new Button(botoneraPanel) => [
+			caption = "-"
+			width = 100
 			onClick [| 
 				this.modelObject.eliminarNota
 			]
 		]
 	}
 	
+	def editarNota(String titulo, Nota nota) {
+		new EditarNotaComponentizadaWindow(this, nota) => [
+			title = titulo
+			open
+		]
+	}
 	
 }

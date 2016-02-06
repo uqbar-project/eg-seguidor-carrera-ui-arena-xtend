@@ -1,13 +1,13 @@
-package org.uqbar.arena.examples.materias.view.seguidor
+package ar.edu.seguidorCarrera.view.seguidor
 
+import ar.edu.seguidorCarrera.appModel.SeguidorDeCarreraAppModel
+import ar.edu.seguidorCarrera.domain.Materia
+import ar.edu.seguidorCarrera.domain.Nota
+import ar.edu.seguidorCarrera.view.CrearNotaWindow
+import ar.edu.seguidorCarrera.view.EditarNotaWindow
+import ar.edu.seguidorCarrera.view.NuevaMateriaWindow
 import java.text.SimpleDateFormat
 import org.uqbar.arena.bindings.PropertyAdapter
-import org.uqbar.arena.examples.materias.domain.Materia
-import org.uqbar.arena.examples.materias.domain.Nota
-import org.uqbar.arena.examples.materias.domain.appModel.SeguidorDeCarreraAppModel
-import org.uqbar.arena.examples.materias.view.CrearNotaWindow
-import org.uqbar.arena.examples.materias.view.EditarNotaWindow
-import org.uqbar.arena.examples.materias.view.NuevaMateriaWindow
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.CheckBox
 import org.uqbar.arena.widgets.Label
@@ -19,6 +19,8 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
+
+import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
 
 class SeguidorWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 
@@ -46,8 +48,8 @@ class SeguidorWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 	def crearListadoDeMaterias(Panel owner) {
 		new Label(owner).text = "Materias"
 		new List<Materia>(owner)=>[
-			bindValueToProperty("materiaSeleccionada")
-			bindItemsToProperty("carrera.materias").adapter = new PropertyAdapter(Materia, "nombreMateria")
+			value <=> "materiaSeleccionada"
+			(items <=> "carrera.materias").adapter = new PropertyAdapter(Materia, "nombreMateria")
 		]
 		new Button(owner) =>[
 			caption = "Nueva Materia"
@@ -56,31 +58,32 @@ class SeguidorWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 	}
 
 	def crearEdicionDeMateriaSeleccionada(Panel owner) {
-		new Label(owner).bindValueToProperty("materiaSeleccionada.nombreMateria")
+		new Label(owner).value <=> "materiaSeleccionada.nombreMateria"
 		
-		new Label(owner).text="Aprobo:"
-		new CheckBox(owner).bindValueToProperty("materiaSeleccionada.estaAprobada")
+		new Label(owner).text = "Aprobo:"
+		new CheckBox(owner).value <=> "materiaSeleccionada.estaAprobada"
 		
 		new Label(owner).text="Año de cursada:"
-		new TextBox(owner).bindValueToProperty("materiaSeleccionada.anioCursada")
+		new TextBox(owner).value <=> "materiaSeleccionada.anioCursada"
 		
-		new Label(owner).text="Profesor de cursada:"
-		new TextBox(owner).bindValueToProperty("materiaSeleccionada.profesor")
+		new Label(owner).text = "Profesor de cursada:"
+		new TextBox(owner).value <=> "materiaSeleccionada.profesor"
 		
 		new Label(owner).text = "Ubicación:"
 		new Selector(owner) => [
-			bindItemsToProperty("ubicacionesPosibles")
-			bindValueToProperty("materiaSeleccionada.ubicacion")
+			items <=> "ubicacionesPosibles"
+			value <=> "materiaSeleccionada.ubicacion"
 		]
 		
 		new Label(owner).text = "Notas de Cursada"
-		var tablaDeNotas = new Table<Nota>(owner, Nota)
-		tablaDeNotas.bindItemsToProperty("materiaSeleccionada.notas")
-		tablaDeNotas.bindValueToProperty("notaSeleccionada")
+		val tablaDeNotas = new Table<Nota>(owner, Nota) => [
+			items <=> "materiaSeleccionada.notas"
+			value <=> "notaSeleccionada"
+		]
 		
 		new Column(tablaDeNotas)=>[
 			title = "Fecha"
-			bindContentsToTransformer([ nota | new SimpleDateFormat("dd/MM/YYYY").format(nota.fecha)])
+			bindContentsToProperty("fecha").transformer = [ fecha | new SimpleDateFormat("dd/MM/YYYY").format(fecha)]
 		]
 		
 		new Column<Nota>(tablaDeNotas)=>[
@@ -90,24 +93,23 @@ class SeguidorWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 
 		new Column(tablaDeNotas) =>[
 			title = "Aprobado"
-//			bindContentsToTransformer([ nota | if(nota.estaAprobada) "Si" else "No"])
-			bindContentsToProperty("estaAprobada")
+			bindContentsToProperty("estaAprobada").transformer = [ estaAprobada | if (estaAprobada) "Si" else "No"]
 		]
 		
-		new Button(owner)=>[
-			caption="Editar"
+		new Button(owner) => [
+			caption = "Editar"
 			onClick [|new EditarNotaWindow(this, this.modelObject.notaSeleccionada).open]
 		]
 			
 		new Button(owner)=>[
-			caption="+"
+			caption = "+"
 			onClick [| 
 				val nota = this.modelObject.nuevaNota
 				new CrearNotaWindow(this, nota).open
 			]
 		]
 		
-		new Button(owner)=>[
+		new Button(owner) => [
 			caption="-"
 			onClick [| 
 				this.modelObject.eliminarNota
