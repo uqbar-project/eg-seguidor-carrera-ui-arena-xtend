@@ -4,6 +4,8 @@
 
 Prueba de concepto que pedimos en el 2014 con una aplicación que permite hacer un seguimiento de las materias aprobadas por un alumno
 
+![image](https://cloud.githubusercontent.com/assets/4549002/17306089/80aa9dca-5804-11e6-9526-a78d265476d0.png)
+
 ## Conceptos interesantes
 
 * Manejo de layouts no triviales
