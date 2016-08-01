@@ -7,5 +7,5 @@ Prueba de concepto que pedimos en el 2014 con una aplicación que permite hacer 
 ## Conceptos interesantes
 
 * Manejo de layouts no triviales
-* Application model compuesto: se selecciona una materia que tiene asociado notas
+* Application model compuesto: se selecciona una materia que tiene asociada notas
 * Uso de list boxes y widgets combinados
