@@ -24,6 +24,9 @@ import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
 
 import static extension org.uqbar.arena.xtend.ArenaXtendExtensions.*
+import org.uqbar.arena.widgets.Selector
+import ar.edu.seguidorCarrera.domain.Ubicacion
+import org.apache.commons.collections15.Transformer
 
 class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarreraAppModel> {
 
@@ -57,15 +60,18 @@ class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarre
 
 		new Titulo(panelDeListadoDeMaterias, "Materias")
 		new List<Materia>(panelDeListadoDeMaterias) => [
-				(items <=> "carrera.materias").adapter = new PropertyAdapter(Materia, "nombreMateria")
+				(items <=> "carrera.materias").adapter = 
+					new PropertyAdapter(Materia, "nombreMateria")
 				height = 150
 				width = 270
 				value <=> "materiaSeleccionada"
 			]
 			
-		new Button(panelDeListadoDeMaterias) =>[
+		new Button(panelDeListadoDeMaterias) => [
 			caption = "Nueva Materia"
-			onClick [ | new NuevaMateriaWindow(this, this.modelObject.carrera).open ]
+			onClick [ | 
+				new NuevaMateriaWindow(this, this.modelObject.carrera).open
+			]
 		] 
 	}
 
@@ -90,9 +96,15 @@ class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarre
 			.setText("Profesor de cursada:")
 			.bindValueToProperty("materiaSeleccionada.profesor")
 		
-		new LabeledSelector(materiaCompletaPanel)=>[
+		val selectorPanel = new Panel(materiaCompletaPanel) =>[
+			layout = new HorizontalLayout
+		]
+		new Label(selectorPanel) => [
 			text = "Ubicación:"
-			bindItemsToProperty("ubicacionesPosibles")
+		]
+		new Selector(selectorPanel)=>[
+			(items <=> "ubicacionesPosibles").adapter = 
+				new PropertyAdapter(Ubicacion, "readableName")
 			bindValueToProperty("materiaSeleccionada.ubicacion")
 		]
 		
@@ -109,7 +121,11 @@ class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarre
 		
 		new Column(tablaDeNotas) =>[
 			title = "Fecha"
-			bindContentsToProperty("fecha").transformer = [ Date fecha | new SimpleDateFormat("dd/MM/YYYY").format(fecha)] 
+			bindContentsToProperty("fecha").transformer = new Transformer<Date, String>() {
+				override transform(Date fecha) {
+					new SimpleDateFormat("dd/MM/YYYY").format(fecha)
+				}
+			}
 		]
 		
 		new Column<Nota>(tablaDeNotas)=>[
