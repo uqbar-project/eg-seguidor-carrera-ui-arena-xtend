@@ -134,7 +134,7 @@ class SeguidorDeCarreraComponentizadoWindow extends SimpleWindow<SeguidorDeCarre
 		new Button(botoneraPanel) => [
 			caption = "+"
 			width = 100
-			onClick [ | editarNota("Nueva Nota", this.modelObject.nuevaNota)]
+			onClick [ | editarNota("Nueva Nota", this.modelObject.nuevaNota) ]
 		]
 		
 		new Button(botoneraPanel) => [
